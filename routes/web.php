@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Livewire\RegisterForm;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,3 +15,4 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::view('/', 'welcome')->name('home');
+Route::get('/register', RegisterForm::class)->name('register');
