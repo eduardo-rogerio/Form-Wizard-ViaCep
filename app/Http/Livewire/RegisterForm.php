@@ -11,7 +11,6 @@ use Livewire\Component;
 class RegisterForm extends Component implements Forms\Contracts\HasForms
 {
     use Forms\Concerns\InteractsWithForms;
-
     public function render()
     {
         return view('livewire.register-form');
@@ -19,7 +18,7 @@ class RegisterForm extends Component implements Forms\Contracts\HasForms
 
     public function submit(): void
     {
-
+        $data = $this->validate();
     }
 
     protected function getFormSchema(): array
@@ -56,7 +55,8 @@ class RegisterForm extends Component implements Forms\Contracts\HasForms
                     TextInput::make('password')
                         ->password()
                         ->label('Password')
-                        ->required(),
+                        ->required()
+                        ->minLength(8),
                     TextInput::make('password_confirmation')
                         ->password()
                         ->label('Password Confirmation')
