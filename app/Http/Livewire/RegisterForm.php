@@ -12,6 +12,7 @@ use Filament\Forms\Components\Wizard;
 use Filament\Forms\Components\Wizard\Step;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\HtmlString;
 use Illuminate\Validation\ValidationException;
 use Livewire\Component;
 
@@ -175,9 +176,11 @@ class RegisterForm extends Component implements Forms\Contracts\HasForms
                     ])
                     ->columns(6),
             ])
-                ->startOnStep(2),
-
-
+                ->startOnStep(2)
+                ->submitAction(new HtmlString(view('livewire.register-form-submit')))
+                ->extraAttributes([
+                    'class' => 'dark:text-white',
+                ]),
         ];
     }
 }
