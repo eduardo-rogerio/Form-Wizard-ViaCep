@@ -6,7 +6,7 @@ Este é um projeto Laravel que utiliza o Form Builder do FilamentPHP para criar 
 
 ## Funcionamento
 
-* Aqui você pode adicionar uma screenshot do formulário funcionando.
+![](form.gif)
 
 ## Pré-requisitos
 
