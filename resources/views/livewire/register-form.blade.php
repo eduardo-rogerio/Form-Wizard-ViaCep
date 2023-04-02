@@ -1,4 +1,18 @@
 <div>
+    <x-filament-support::modal id="registerFormSuccess" :darkMode="true">
+        <x-slot name="header">
+            <span class="dark:text-white">Formulário recebido com sucesso!</span>
+        </x-slot>
+        @if($data)
+            <p class="dark:text-white">Olá {{$data['first_name']}},</p>
+        @endif
+        <p class="dark:text-white">Obrigado por se registrar no nosso site!</p>
+
+        <x-filament-support::button icon="heroicon-o-check" icon-position="after" size="sm" type="button"
+                                    x-on:click="$dispatch('close-modal',{id:'registerFormSuccess'})">
+            Ok
+        </x-filament-support::button>
+    </x-filament-support::modal>
     <form wire:submit.prevent="submit">
         {{ $this->form }}
     </form>
@@ -11,14 +25,5 @@
                                          target="_blank">Flowbite
             Documentation</a>.
     </p>
-
-    @if($data)
-        <div class="mt-5 dark:text-white">
-            <h2 class="text-lg font-bold">Submitted Data</h2>
-            <pre class="mt-2 p-4 bg-gray-100 dark:bg-gray-800 rounded-md">
-                {{ var_export($data) }}
-            </pre>
-        </div>
-    @endif
 
 </div>
