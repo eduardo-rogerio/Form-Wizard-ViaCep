@@ -48,6 +48,7 @@ class RegisterForm extends Component implements Forms\Contracts\HasForms
             'password_confirmation' => '12345678',
             'terms' => true,
             'postal_code' => '01001-000',
+            'number' => fake()->numberBetween(100, 1000),
         ]);
     }
 
@@ -58,7 +59,11 @@ class RegisterForm extends Component implements Forms\Contracts\HasForms
 
     public function submit(): void
     {
+        sleep(1);
         $this->data = $this->form->getState();
+        $this->dispatchBrowserEvent('open-modal', ['id' => 'registerFormSuccess']);
+        $this->form->fill();
+        $this->dispatchBrowserEvent('form-submitted');
     }
 
     protected function getFormSchema(): array
@@ -176,11 +181,12 @@ class RegisterForm extends Component implements Forms\Contracts\HasForms
                     ])
                     ->columns(6),
             ])
-                ->startOnStep(2)
+                ->startOnStep(1)
                 ->submitAction(new HtmlString(view('livewire.register-form-submit')))
                 ->extraAttributes([
                     'class' => 'dark:text-white',
-                ]),
+                ])
+                ->extraAlpineAttributes(['@form-submitted.window' => 'step = \'account\''])
         ];
     }
 }
