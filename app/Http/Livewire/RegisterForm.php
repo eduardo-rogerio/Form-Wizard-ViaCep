@@ -87,7 +87,8 @@ class RegisterForm extends Component implements Forms\Contracts\HasForms
                         ->password()
                         ->label('Password')
                         ->required()
-                        ->minLength(8),
+                        ->minLength(8)
+                        ->confirmed(),
                     TextInput::make('password_confirmation')
                         ->password()
                         ->label('Password Confirmation')
