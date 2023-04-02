@@ -12,6 +12,7 @@ use Filament\Forms\Components\Wizard;
 use Filament\Forms\Components\Wizard\Step;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Validation\ValidationException;
 use Livewire\Component;
 
 class RegisterForm extends Component implements Forms\Contracts\HasForms
@@ -121,13 +122,23 @@ class RegisterForm extends Component implements Forms\Contracts\HasForms
 
                                         $requet = Http::get("https://viacep.com.br/ws/{$state}/json/")
                                             ->json();
+                                        if (! isset($requet['erro'])) {
+                                            $set('street', $requet['logradouro']);
+                                            $set('complement', $requet['complemento']);
+                                            $set('district', $requet['bairro']);
+                                            $set('city', $requet['localidade']);
+                                            $set('state', $requet['uf']);
+                                        } else {
+                                            $set('street', null);
+                                            $set('complement', null);
+                                            $set('district', null);
+                                            $set('city', null);
+                                            $set('state', null);
 
-                                        $set('street', $requet['logradouro']);
-                                        $set('complement', $requet['complemento']);
-                                        $set('district', $requet['bairro']);
-                                        $set('city', $requet['localidade']);
-                                        $set('state', $requet['uf']);
-
+                                            throw ValidationException::withMessages([
+                                                'postal_code' => 'Este cep é inválido.',
+                                            ]);
+                                        }
                                     });
                             })
                             ->label('Postal Code')
