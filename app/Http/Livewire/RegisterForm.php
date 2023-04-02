@@ -12,16 +12,35 @@ class RegisterForm extends Component implements Forms\Contracts\HasForms
 {
     use Forms\Concerns\InteractsWithForms;
 
+    public $data = null;
     public $first_name;
     public $last_name;
     public $company;
     public $phone_number;
     public $website;
     public $unique_visitor;
+
     public $email;
+
     public $password;
     public $password_confirmation;
     public $terms;
+
+    public function mount()
+    {
+        $this->form->fill([
+            'first_name' => fake()->firstName(),
+            'last_name' => fake()->lastName(),
+            'company' => fake()->company(),
+            'phone_number' => fake()->phoneNumber(),
+            'website' => fake()->url(),
+            'unique_visitor' => fake()->numberBetween(100, 1000),
+            'email' => fake()->email(),
+            'password' => '12345678',
+            'password_confirmation' => '12345678',
+            'terms' => true,
+        ]);
+    }
 
     public function render()
     {
@@ -30,7 +49,7 @@ class RegisterForm extends Component implements Forms\Contracts\HasForms
 
     public function submit(): void
     {
-        $this->validate();
+        $this->data = $this->form->getState();
     }
 
     protected function getFormSchema(): array
