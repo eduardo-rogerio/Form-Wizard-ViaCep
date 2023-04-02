@@ -4,8 +4,11 @@ namespace App\Http\Livewire;
 
 use Filament\Forms;
 use Filament\Forms\Components\Checkbox;
-use Filament\Forms\Components\Grid;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Wizard;
+use Filament\Forms\Components\Wizard\Step;
+use Illuminate\Support\Facades\File;
 use Livewire\Component;
 
 class RegisterForm extends Component implements Forms\Contracts\HasForms
@@ -55,17 +58,18 @@ class RegisterForm extends Component implements Forms\Contracts\HasForms
     protected function getFormSchema(): array
     {
         return [
-            Grid::make(2)
-                ->schema([
-                    TextInput::make('email')
-                        ->email()
-                        ->columnSpan('full')
-                        ->label('Email')
-                        ->required(),
-                    TextInput::make('first_name')
-                        ->rule('min:3')
-                        ->label('First Name')
-                        ->required(),
+            Wizard::make([
+                Step::make('account')
+                    ->schema([
+                        TextInput::make('email')
+                            ->email()
+                            ->columnSpan('full')
+                            ->label('Email')
+                            ->required(),
+                        TextInput::make('first_name')
+                            ->rule('min:3')
+                            ->label('First Name')
+                            ->required(),
                     TextInput::make('last_name')
                         ->label('Last Name')
                         ->required(),
@@ -89,15 +93,55 @@ class RegisterForm extends Component implements Forms\Contracts\HasForms
                         ->required()
                         ->minLength(8)
                         ->confirmed(),
-                    TextInput::make('password_confirmation')
-                        ->password()
-                        ->label('Password Confirmation')
-                        ->required(),
-                    Checkbox::make('terms')
-                        ->columnSpan('full')
-                        ->label('I agree to the terms and conditions')
-                        ->required(),
-                ]),
+                        TextInput::make('password_confirmation')
+                            ->password()
+                            ->label('Password Confirmation')
+                            ->required(),
+                        Checkbox::make('terms')
+                            ->columnSpan('full')
+                            ->label('I agree to the terms and conditions')
+                            ->required(),
+
+                    ])
+                    ->columns(2),
+                Step::make('address')
+                    ->schema([
+                        TextInput::make('postal_code')
+                            ->label('Postal Code')
+                            ->columnSpan(2)
+                            ->required(),
+                        TextInput::make('street')
+                            ->label('Street')
+                            ->columnSpan(4)
+                            ->required(),
+                        TextInput::make('number')
+                            ->label('Number')
+                            ->columnSpan(2)
+                            ->required(),
+                        TextInput::make('complement')
+                            ->label('Complement')
+                            ->columnSpan(4)
+                            ->required(),
+                        TextInput::make('district')
+                            ->label('District')
+                            ->columnSpan(3)
+                            ->required(),
+                        TextInput::make('city')
+                            ->label('City')
+                            ->columnSpan(3)
+                            ->required(),
+                        Select::make('state')
+                            ->label('State')
+                            ->searchable()
+                            ->columnSpanFull()
+                            ->options(
+                                File::json(public_path('data/states.json'))
+                            ),
+                    ])
+                    ->columns(6),
+            ])
+                ->startOnStep(2),
+
 
         ];
     }
