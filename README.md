@@ -20,7 +20,7 @@ Este é um projeto Laravel que utiliza o Form Builder do FilamentPHP para criar 
 1. Clone o repositório para sua máquina local:
 
 ```bash
-git clone https://github.com/seu-usuario/seu-repositorio.git
+git clone https://github.com/eduardo-rogerio/Laravel-Form-Builder.git
 ```
 
 2. Instale as dependências com o Composer:
