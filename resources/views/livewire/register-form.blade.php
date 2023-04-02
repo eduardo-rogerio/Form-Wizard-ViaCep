@@ -1,11 +1,6 @@
 <div>
     <form wire:submit.prevent="submit">
         {{ $this->form }}
-
-        <x-filament-support::button wire:target="submit" type="submit" class="mt-4">
-            Submit
-        </x-filament-support::button>
-
     </form>
 
     <p class="mt-5 dark:text-white">These input field components is part of a larger, open-source library of Tailwind
