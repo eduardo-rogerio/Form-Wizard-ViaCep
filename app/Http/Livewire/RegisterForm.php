@@ -11,6 +11,18 @@ use Livewire\Component;
 class RegisterForm extends Component implements Forms\Contracts\HasForms
 {
     use Forms\Concerns\InteractsWithForms;
+
+    public $first_name;
+    public $last_name;
+    public $company;
+    public $phone_number;
+    public $website;
+    public $unique_visitor;
+    public $email;
+    public $password;
+    public $password_confirmation;
+    public $terms;
+
     public function render()
     {
         return view('livewire.register-form');
@@ -18,7 +30,7 @@ class RegisterForm extends Component implements Forms\Contracts\HasForms
 
     public function submit(): void
     {
-        $data = $this->validate();
+        $this->validate();
     }
 
     protected function getFormSchema(): array
