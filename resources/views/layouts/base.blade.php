@@ -26,7 +26,7 @@
 
 <body x-data="{mode:'dark'}" :class="mode === 'dark' ? 'dark bg-gray-800':'light bg-white'">
 <div class="max-w-2xl mx-auto p-16 bg-white dark:bg-gray-800">
-    <div class="flex items-end justify-end">
+    <div class="flex items-end justify-end mb-5">
         <x-dynamic-component
             @click="mode = 'light'"
             x-show="mode === 'dark'"
