@@ -3,12 +3,15 @@
 namespace App\Http\Livewire;
 
 use Filament\Forms;
+use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\TextInput\Mask;
 use Filament\Forms\Components\Wizard;
 use Filament\Forms\Components\Wizard\Step;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Http;
 use Livewire\Component;
 
 class RegisterForm extends Component implements Forms\Contracts\HasForms
@@ -42,6 +45,7 @@ class RegisterForm extends Component implements Forms\Contracts\HasForms
             'password' => '12345678',
             'password_confirmation' => '12345678',
             'terms' => true,
+            'postal_code' => '01001-000',
         ]);
     }
 
@@ -70,29 +74,29 @@ class RegisterForm extends Component implements Forms\Contracts\HasForms
                             ->rule('min:3')
                             ->label('First Name')
                             ->required(),
-                    TextInput::make('last_name')
-                        ->label('Last Name')
-                        ->required(),
-                    TextInput::make('company')
-                        ->label('Company')
-                        ->required(),
-                    TextInput::make('phone_number')
-                        ->label('Phone Number')
-                        ->required(),
-                    TextInput::make('website')
-                        ->url()
-                        ->label('Website')
-                        ->required(),
-                    TextInput::make('unique_visitor')
-                        ->numeric()
-                        ->label('Unique Visitor')
-                        ->required(),
-                    TextInput::make('password')
-                        ->password()
-                        ->label('Password')
-                        ->required()
-                        ->minLength(8)
-                        ->confirmed(),
+                        TextInput::make('last_name')
+                            ->label('Last Name')
+                            ->required(),
+                        TextInput::make('company')
+                            ->label('Company')
+                            ->required(),
+                        TextInput::make('phone_number')
+                            ->label('Phone Number')
+                            ->required(),
+                        TextInput::make('website')
+                            ->url()
+                            ->label('Website')
+                            ->required(),
+                        TextInput::make('unique_visitor')
+                            ->numeric()
+                            ->label('Unique Visitor')
+                            ->required(),
+                        TextInput::make('password')
+                            ->password()
+                            ->label('Password')
+                            ->required()
+                            ->minLength(8)
+                            ->confirmed(),
                         TextInput::make('password_confirmation')
                             ->password()
                             ->label('Password Confirmation')
@@ -107,6 +111,25 @@ class RegisterForm extends Component implements Forms\Contracts\HasForms
                 Step::make('address')
                     ->schema([
                         TextInput::make('postal_code')
+                            ->mask(fn(Mask $mask) => $mask->pattern('00000-000'))
+                            ->minLength(8)
+                            ->suffixAction(function ($state, $livewire, $set) {
+                                return Action::make('search-action')
+                                    ->icon('heroicon-o-search')
+                                    ->action(function () use ($livewire, $state, $set) {
+                                        $livewire->validateOnly('postal_code');
+
+                                        $requet = Http::get("https://viacep.com.br/ws/{$state}/json/")
+                                            ->json();
+
+                                        $set('street', $requet['logradouro']);
+                                        $set('complement', $requet['complemento']);
+                                        $set('district', $requet['bairro']);
+                                        $set('city', $requet['localidade']);
+                                        $set('state', $requet['uf']);
+
+                                    });
+                            })
                             ->label('Postal Code')
                             ->columnSpan(2)
                             ->required(),
@@ -132,6 +155,7 @@ class RegisterForm extends Component implements Forms\Contracts\HasForms
                             ->required(),
                         Select::make('state')
                             ->label('State')
+                            ->required()
                             ->searchable()
                             ->columnSpanFull()
                             ->options(
