@@ -53,7 +53,7 @@ php artisan migrate
 php artisan serve
 ```
 
-7. Acesse o formulário no navegador em `http://localhost:8000/leads/create`
+7. Acesse o formulário no navegador em `http://localhost:8000/register/create`
 
 ## Licença
 
