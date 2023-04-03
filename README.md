@@ -5,7 +5,7 @@ Este é um projeto Laravel que utiliza o Form Builder do FilamentPHP para criar 
 [![wakatime](https://wakatime.com/badge/user/a123514e-1d04-4b39-aaac-69ab598cacd9/project/87d8d18d-0752-46b2-b7d4-901954817d87.svg)](https://wakatime.com/badge/user/a123514e-1d04-4b39-aaac-69ab598cacd9/project/87d8d18d-0752-46b2-b7d4-901954817d87)
 
 ## Funcionamento
-
+![](form.gif)
 ## Pré-requisitos
 
 * PHP 8.0 ou superior
