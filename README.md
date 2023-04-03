@@ -6,8 +6,6 @@ Este é um projeto Laravel que utiliza o Form Builder do FilamentPHP para criar 
 
 ## Funcionamento
 
-![](form.gif)
-
 ## Pré-requisitos
 
 * PHP 8.0 ou superior
